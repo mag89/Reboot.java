@@ -1,0 +1,18 @@
+﻿.idea
+target
+*.iml
+
+## Java template
+*.class
+
+## Package Files #
+*.jar
+*.war
+*.ear
+*.swp
+
+## IDE files
+.classpath
+.project
+.settings/
+.metadata
