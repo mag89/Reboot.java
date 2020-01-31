@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class ExcelFileConverter implements Converter {
@@ -104,7 +105,8 @@ public class ExcelFileConverter implements Converter {
             for (Row row : workbookSheet) {
                 if (budgetClassificationCode.equals(row.getCell(0) + "")) {
                     for (int i = 1; i <= 7; i++) {
-                        row.getCell(i).setCellValue(states.get(budgetClassificationCode).get(i - 1));
+                        Optional<Cell> optionalCell = Optional.ofNullable(row.getCell(i));
+                        optionalCell.orElse(row.createCell(i)).setCellValue(states.get(budgetClassificationCode).get(i - 1));
                     }
 
                     isMatched = true;
