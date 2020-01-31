@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.tax.statementToReport.dto.StatementDto;
 import ru.tax.statementToReport.exceptions.InvalidTypeException;
+import ru.tax.statementToReport.exceptions.SheetDoesNotExistException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -96,13 +97,14 @@ public class ExcelFileConverter implements Converter {
                 throw new InvalidTypeException("Unknown file type: " + type);
         }
 
+        Optional<Sheet> optionalSheet = Optional.ofNullable(workbookSheet);
         Map<String, ArrayList<Double>> states = statementDto.getStates();
         Map<String, ArrayList<Double>> mismatchedStates = new HashMap<>();
 
         for (String budgetClassificationCode : states.keySet()) {
             Boolean isMatched = false;
 
-            for (Row row : workbookSheet) {
+            for (Row row : optionalSheet.orElseThrow(SheetDoesNotExistException::new)) {
                 if (budgetClassificationCode.equals(row.getCell(0) + "")) {
                     for (int i = 1; i <= 7; i++) {
                         Optional<Cell> optionalCell = Optional.ofNullable(row.getCell(i));
