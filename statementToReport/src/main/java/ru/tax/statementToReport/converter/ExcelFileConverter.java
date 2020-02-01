@@ -1,9 +1,10 @@
 package ru.tax.statementToReport.converter;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.tax.statementToReport.dto.StatementDto;
 import ru.tax.statementToReport.exceptions.InvalidTypeException;
@@ -20,7 +21,6 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class ExcelFileConverter implements Converter {
-    private String sheetName;
 
     @Override
     public StatementDto convertToStatementDto(String excelFileREF, FileTypes type, int sheetNum) throws IOException {
@@ -31,12 +31,12 @@ public class ExcelFileConverter implements Converter {
         switch (type) {
             case XLS: {
                 workbook = new HSSFWorkbook(fileInputStream);
-                workbookSheet = (HSSFSheet) workbook.getSheetAt(sheetNum);
+                workbookSheet = workbook.getSheetAt(sheetNum);
                 break;
             }
             case XLSX: {
                 workbook = new XSSFWorkbook(fileInputStream);
-                workbookSheet = (XSSFSheet) workbook.getSheetAt(sheetNum);
+                workbookSheet = workbook.getSheetAt(sheetNum);
                 break;
             }
             default:
@@ -51,11 +51,11 @@ public class ExcelFileConverter implements Converter {
             String stringCell0 = row.getCell(0) + "";
 
             if (budgetClassificationCodePattern.matcher(stringCell0).find()) {
-                Boolean booleanCell3 = Double.parseDouble(row.getCell(3) + "") != 0.0;
-                Boolean booleanCell4 = Double.parseDouble(row.getCell(4) + "") != 0.0;
-                Boolean booleanCell5 = Double.parseDouble(row.getCell(5) + "") != 0.0;
-                Boolean booleanCell6 = Double.parseDouble(row.getCell(6) + "") != 0.0;
-                Boolean booleanCell7 = Double.parseDouble(row.getCell(7) + "") != 0.0;
+                boolean booleanCell3 = Double.parseDouble(row.getCell(3) + "") != 0.0;
+                boolean booleanCell4 = Double.parseDouble(row.getCell(4) + "") != 0.0;
+                boolean booleanCell5 = Double.parseDouble(row.getCell(5) + "") != 0.0;
+                boolean booleanCell6 = Double.parseDouble(row.getCell(6) + "") != 0.0;
+                boolean booleanCell7 = Double.parseDouble(row.getCell(7) + "") != 0.0;
 
                 if ((booleanCell3) || (booleanCell4) || (booleanCell5) || (booleanCell6) || (booleanCell7)) {
                     charge = new ArrayList<>();
@@ -67,7 +67,7 @@ public class ExcelFileConverter implements Converter {
             }
         }
 
-        this.sheetName = workbook.getSheetName(sheetNum);
+        String sheetName = workbook.getSheetName(sheetNum);
         StatementDto statementDto = new StatementDto(states, sheetName);
         workbook.close();
         fileInputStream.close();
@@ -85,12 +85,12 @@ public class ExcelFileConverter implements Converter {
         switch (type) {
             case XLS: {
                 workbook = new HSSFWorkbook(fileInputStream);
-                workbookSheet = (HSSFSheet) workbook.getSheet(statementDto.getSheetName());
+                workbookSheet = workbook.getSheet(statementDto.getSheetName());
                 break;
             }
             case XLSX: {
                 workbook = new XSSFWorkbook(fileInputStream);
-                workbookSheet = (XSSFSheet) workbook.getSheet(statementDto.getSheetName());
+                workbookSheet = workbook.getSheet(statementDto.getSheetName());
                 break;
             }
             default:
@@ -102,9 +102,15 @@ public class ExcelFileConverter implements Converter {
         Map<String, ArrayList<Double>> mismatchedStates = new HashMap<>();
 
         for (String budgetClassificationCode : states.keySet()) {
-            Boolean isMatched = false;
+            boolean isMatched = false;
 
             for (Row row : optionalSheet.orElseThrow(SheetDoesNotExistException::new)) {
+                Optional<Cell> optionalCell0 = Optional.ofNullable(row.getCell(0));
+
+                if (!optionalCell0.isPresent()) {
+                    continue;
+                }
+
                 if (budgetClassificationCode.equals(row.getCell(0) + "")) {
                     for (int i = 1; i <= 7; i++) {
                         Optional<Cell> optionalCell = Optional.ofNullable(row.getCell(i));
