@@ -105,9 +105,8 @@ public class ExcelFileConverter implements Converter {
             boolean isMatched = false;
 
             for (Row row : optionalSheet.orElseThrow(SheetDoesNotExistException::new)) {
-                Optional<Cell> optionalCell0 = Optional.ofNullable(row.getCell(0));
-
-                if (!optionalCell0.isPresent()) {
+                // TODO refactor row.getCell(0)==null to Optional? How?
+                if (row.getCell(0) == null) {
                     continue;
                 }
 
