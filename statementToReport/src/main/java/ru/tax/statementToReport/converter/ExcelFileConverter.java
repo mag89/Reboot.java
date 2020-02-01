@@ -43,21 +43,30 @@ public class ExcelFileConverter implements Converter {
                 throw new InvalidTypeException("Unknown file type: " + type);
         }
 
+        Optional<Sheet> optionalSheet = Optional.ofNullable(workbookSheet);
         Pattern budgetClassificationCodePattern = Pattern.compile("182\\d{17}");
         ArrayList<Double> charge;
         Map<String, ArrayList<Double>> states = new HashMap<>();
 
-        for (Row row : workbookSheet) {
-            String stringCell0 = row.getCell(0) + "";
+        for (Row row : optionalSheet.orElseThrow(SheetDoesNotExistException::new)) {
+            // TODO refactor row.getCell(0)==null to Optional? How?
+            if (row.getCell(0) == null) {
+                continue;
+            }
 
+            Cell valueCell0 = row.getCell(0);
+            String stringCell0 = valueCell0 + "";
             if (budgetClassificationCodePattern.matcher(stringCell0).find()) {
-                boolean booleanCell3 = Double.parseDouble(row.getCell(3) + "") != 0.0;
-                boolean booleanCell4 = Double.parseDouble(row.getCell(4) + "") != 0.0;
-                boolean booleanCell5 = Double.parseDouble(row.getCell(5) + "") != 0.0;
-                boolean booleanCell6 = Double.parseDouble(row.getCell(6) + "") != 0.0;
-                boolean booleanCell7 = Double.parseDouble(row.getCell(7) + "") != 0.0;
 
-                if ((booleanCell3) || (booleanCell4) || (booleanCell5) || (booleanCell6) || (booleanCell7)) {
+                ArrayList<Boolean> isNonZeroCell = new ArrayList<>(5);
+                for (int i = 3; i <= 7; i++) {
+                    Optional.ofNullable(row.getCell(i)).orElse(row.createCell(i)).setCellValue(0.0);
+                    double doubleCellValue = Double.parseDouble(row.getCell(i) + "");
+                    isNonZeroCell.add(doubleCellValue != 0.0);
+                }
+
+                if ((isNonZeroCell.get(0)) || (isNonZeroCell.get(1)) || (isNonZeroCell.get(2))
+                        || (isNonZeroCell.get(3)) || (isNonZeroCell.get(4))) {
                     charge = new ArrayList<>();
                     for (int i = 1; i <= 7; i++) {
                         charge.add(Double.parseDouble(row.getCell(i) + ""));
