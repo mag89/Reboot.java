@@ -60,7 +60,12 @@ public class ExcelFileConverter implements Converter {
 
                 ArrayList<Boolean> isNonZeroCell = new ArrayList<>(5);
                 for (int i = 3; i <= 7; i++) {
-                    Optional.ofNullable(row.getCell(i)).orElse(row.createCell(i)).setCellValue(0.0);
+                    Cell cell = Optional.ofNullable(row.getCell(i)).orElse(row.createCell(i));
+
+                    if ((cell + "").equals("")) {
+                        cell.setCellValue(0.0);
+                    }
+
                     double doubleCellValue = Double.parseDouble(row.getCell(i) + "");
                     isNonZeroCell.add(doubleCellValue != 0.0);
                 }
