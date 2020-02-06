@@ -1,10 +1,7 @@
 package ru.tax.statementToReport.converter;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import ru.tax.statementToReport.dto.StatementDto;
 import ru.tax.statementToReport.exceptions.InvalidTypeException;
@@ -57,24 +54,19 @@ public class ExcelFileConverter implements Converter {
             Cell valueCell0 = row.getCell(0);
             String stringCell0 = valueCell0 + "";
             if (budgetClassificationCodePattern.matcher(stringCell0).find()) {
+                setCellNumericValueIfNot(row, 1);
+                setCellNumericValueIfNot(row, 2);
+                boolean isZeroCell3 = setCellNumericValueIfNot(row, 3) == 0.0;
+                boolean isZeroCell4 = setCellNumericValueIfNot(row, 4) == 0.0;
+                boolean isZeroCell5 = setCellNumericValueIfNot(row, 5) == 0.0;
+                boolean isZeroCell6 = setCellNumericValueIfNot(row, 6) == 0.0;
+                boolean isZeroCell7 = setCellNumericValueIfNot(row, 7) == 0.0;
 
-                ArrayList<Boolean> isNonZeroCell = new ArrayList<>(5);
-                for (int i = 3; i <= 7; i++) {
-                    Cell cell = Optional.ofNullable(row.getCell(i)).orElse(row.createCell(i));
+                if (!isZeroCell3 || !isZeroCell4 || !isZeroCell5 || !isZeroCell6 || !isZeroCell7) {
 
-                    if ((cell + "").equals("")) {
-                        cell.setCellValue(0.0);
-                    }
-
-                    double doubleCellValue = Double.parseDouble(row.getCell(i) + "");
-                    isNonZeroCell.add(doubleCellValue != 0.0);
-                }
-
-                if ((isNonZeroCell.get(0)) || (isNonZeroCell.get(1)) || (isNonZeroCell.get(2))
-                        || (isNonZeroCell.get(3)) || (isNonZeroCell.get(4))) {
-                    charge = new ArrayList<>();
+                    charge = new ArrayList<>(7);
                     for (int i = 1; i <= 7; i++) {
-                        charge.add(Double.parseDouble(row.getCell(i) + ""));
+                        charge.add(Optional.ofNullable(row.getCell(i)).map(Cell::getNumericCellValue).orElse(0.0));
                     }
                     states.put(stringCell0, charge);
                 }
@@ -87,6 +79,18 @@ public class ExcelFileConverter implements Converter {
         fileInputStream.close();
 
         return statementDto;
+    }
+
+    private double setCellNumericValueIfNot(Row row, int cellNumber) {
+        double cellNumericValue;
+        try {
+            cellNumericValue = Optional.ofNullable(row.getCell(cellNumber)).map(Cell::getNumericCellValue).orElse(0.0);
+        } catch (IllegalStateException e) {
+            row.getCell(cellNumber).setCellValue(0.0);
+            cellNumericValue = Optional.ofNullable(row.getCell(cellNumber)).map(Cell::getNumericCellValue).orElse(0.0);
+        }
+
+        return cellNumericValue;
     }
 
 
@@ -127,7 +131,7 @@ public class ExcelFileConverter implements Converter {
                 if (budgetClassificationCode.equals(row.getCell(0) + "")) {
                     for (int i = 1; i <= 7; i++) {
                         Optional<Cell> optionalCell = Optional.ofNullable(row.getCell(i));
-                        optionalCell.orElse(row.createCell(i)).setCellValue(states.get(budgetClassificationCode).get(i - 1));
+                        optionalCell.orElse(row.createCell(i, CellType.NUMERIC)).setCellValue(states.get(budgetClassificationCode).get(i - 1));
                     }
 
                     isMatched = true;
@@ -145,7 +149,7 @@ public class ExcelFileConverter implements Converter {
         fileOutputStream.close();
         workbook.close();
 
-        String mismatchedFileREF = "./misMatched.xlsx";
+        String mismatchedFileREF = "C:\\Users\\17274003\\Documents\\misMatched.xlsx";
         FileOutputStream mismatchedFileOutputStream = new FileOutputStream(mismatchedFileREF);
         Workbook mismatchedWorkbook = new XSSFWorkbook();
         Sheet mismatchedSheet = mismatchedWorkbook.createSheet();
