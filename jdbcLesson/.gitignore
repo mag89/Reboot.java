@@ -14,7 +14,7 @@ target
 *.war
 *.ear
 *.swp
-
+ 
 ## IDE files
 .classpath
 .project
