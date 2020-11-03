@@ -24,15 +24,16 @@ public class Main {
 //
 //            conn.commit();
 
-            statement.execute("select * from contacts");
-            ResultSet result = statement.getResultSet();
+//            statement.execute("select * from contacts");
+//            ResultSet results = statement.getResultSet();
+            ResultSet results = statement.executeQuery("select * from contacts");
 
-            while (result.next()) {
-                System.out.printf("%s %s %s", result.getString("name"), result.getInt("phone"),
-                        result.getString("email"));
+            while (results.next()) {
+                System.out.printf("%s %s %s", results.getString("name"), results.getInt("phone"),
+                        results.getString("email"));
                 System.out.println();
             }
-            result.close(); // resultSet это ресурс, после использования нужно закрыть
+            results.close(); // resultSet это ресурс, после использования нужно закрыть
 
         } catch (SQLException e) {
             System.out.println("something went wrong with DB connection: " + e.getMessage());
