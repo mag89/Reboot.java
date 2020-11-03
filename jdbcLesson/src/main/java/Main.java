@@ -22,39 +22,14 @@ public class Main {
                     COLUMN_EMAIL + " TEXT" +
                     ")");
 
-            statement.execute("INSERT INTO " + TABLE_CONTACTS +
-                    " (" +
-                    COLUMN_NAME + ", " +
-                    COLUMN_PHONE + ", " +
-                    COLUMN_EMAIL +
-                    ") " +
-                    "VALUES ('Artur', 9191044681052, 'tyr-84249@mail.ru')");
-
-            statement.execute("INSERT INTO " + TABLE_CONTACTS +
-                    " (" +
-                    COLUMN_NAME + ", " +
-                    COLUMN_PHONE + ", " +
-                    COLUMN_EMAIL +
-                    ") " +
-                    "VALUES ('Julia', 9153333405, 'julkaTsap@yandex.ru')");
-
-            statement.execute("INSERT INTO " + TABLE_CONTACTS +
-                    " (" +
-                    COLUMN_NAME + ", " +
-                    COLUMN_PHONE + ", " +
-                    COLUMN_EMAIL +
-                    ") " +
-                    "VALUES ('del', 6546864354387, 'qwerty@yandex.ru')");
+            insertContacts(statement, "Artur", 9_191_654, "tyr-84249@mail.ru");
+            insertContacts(statement, "Julia", 9_153_333, "julkaTsap@yandex.ru");
+            insertContacts(statement, "del", 6_546_864, "qwerty@yandex.ru");
 
             statement.execute("UPDATE " + TABLE_CONTACTS +
                     " SET " +
                     COLUMN_EMAIL + "='Artur@email.com' WHERE " +
                     COLUMN_NAME + "='Artur'");
-
-//            statement.execute("delete from " +
-//                    "contacts " +
-//                    "where " +
-//                    "name='del'");
 
             statement.execute("DELETE FROM " +
                     TABLE_CONTACTS +
@@ -74,6 +49,17 @@ public class Main {
 
         } catch (SQLException e) {
             System.out.println("something went wrong with DB connection: " + e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    public static void insertContacts(Statement st, String name, int phone, String email) throws SQLException {
+        st.execute("INSERT INTO " + TABLE_CONTACTS +
+                " (" +
+                COLUMN_NAME + ", " +
+                COLUMN_PHONE + ", " +
+                COLUMN_EMAIL +
+                ") " +
+                "VALUES ('" + name + "'," + " " + phone + ", '" + email + "')");
     }
 }
