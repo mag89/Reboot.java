@@ -1,6 +1,9 @@
-public class Artists {
+package model;
+
+public class Album {
     private int id;
     private String name;
+    private int artistId;
 
     public int getId() {
         return id;
@@ -16,5 +19,13 @@ public class Artists {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getArtistId() {
+        return artistId;
+    }
+
+    public void setArtistId(int artistId) {
+        this.artistId = artistId;
     }
 }

@@ -1,8 +1,8 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Datasource implements AutoCloseable {
     private static final String DB_NAME = "music.db";
@@ -42,6 +42,23 @@ public class Datasource implements AutoCloseable {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public List<Artist> queryArtists() {
+        try (Statement statement = conn.createStatement();
+             ResultSet result = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS)) {
+
+            List<Artist> artists = new ArrayList<>();
+            while (result.next()) {
+                Artist artist = new Artist(result.getInt(COLUMN_ARTIST_ID), result.getString(COLUMN_ARTIST_NAME));
+                artists.add(artist);
+            }
+
+            return artists;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
