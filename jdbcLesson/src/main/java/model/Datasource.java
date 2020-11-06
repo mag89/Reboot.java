@@ -12,15 +12,25 @@ public class Datasource implements AutoCloseable {
     private static final String COLUMN_ALBUM_ID = "_id";
     private static final String COLUMN_ALBUM_NAME = "name";
     private static final String COLUMN_ALBUM_ARTIST = "artist";
+    public static final int INDEX_ALBUM_ID = 1;
+    public static final int INDEX_ALBUM_NAME = 2;
+    public static final int INDEX_ALBUM_ARTIST = 3;
 
     private static final String TABLE_ARTISTS = "artists";
     private static final String COLUMN_ARTIST_ID = "_id";
     private static final String COLUMN_ARTIST_NAME = "name";
+    public static final int INDEX_ARTISTS_ID = 1;
+    public static final int INDEX_ARTISTS_NAME = 2;
 
     private static final String TABLE_SINGS = "songs";
+    public static final String COLUMN_ID = "_id";
     private static final String COLUMN_SONG_TRACK = "track";
     private static final String COLUMN_SONG_TITLE = "title";
     private static final String COLUMN_SONG_ALBUM = "album";
+    public static final int INDEX_SONG_ID = 1;
+    public static final int INDEX_SONG_TRACK = 2;
+    public static final int INDEX_SONG_TITLE = 3;
+    public static final int INDEX_SONG_ALBUM = 3;
 
     private Connection conn;
 
@@ -51,7 +61,7 @@ public class Datasource implements AutoCloseable {
 
             List<Artist> artists = new ArrayList<>();
             while (result.next()) {
-                Artist artist = new Artist(result.getInt(COLUMN_ARTIST_ID), result.getString(COLUMN_ARTIST_NAME));
+                Artist artist = new Artist(result.getInt(INDEX_ARTISTS_ID), result.getString(INDEX_ARTISTS_NAME));
                 artists.add(artist);
             }
 
