@@ -1,6 +1,8 @@
 import model.Artist;
 import model.Datasource;
 import model.OrderByType;
+import model.exceptions.NoAlbumsForArtistException;
+import model.exceptions.NoArtistsException;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,16 +17,15 @@ public class Main {
             List<Artist> artists = Optional.ofNullable(datasource.queryArtists(OrderByType.ASC))
                     .orElseThrow(NoArtistsException::new);
 
-//            List<Artist> artists = datasource.queryArtists();
-//            if (artists == null) {
-//                System.out.println("No artists");
-//                return;
-//            }
-
             for (Artist artist : artists) {
                 System.out.println(artist);
-//                System.out.println();
             }
+
+            List<String> albumsForArtists = Optional.ofNullable(datasource
+                    .queryAlbumsForArtist("Pink Floyd", OrderByType.ASC))
+                    .orElseThrow(NoAlbumsForArtistException::new);
+
+            System.out.println(albumsForArtists);
 
             if (!datasource.openConn()) {
                 System.out.println("Can`t open datasource");

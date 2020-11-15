@@ -56,44 +56,93 @@ public class Datasource implements AutoCloseable {
     }
 
     public List<Artist> queryArtists(OrderByType order) {
-
+        List<Artist> artists = new ArrayList<>();
 
         try (Statement statement = conn.createStatement();
-             ResultSet result = statement.executeQuery(generateStringQuery(order))) {
+             ResultSet result = statement.executeQuery(generatePlainSelectQuery(TABLE_ARTISTS, COLUMN_ARTIST_NAME,
+                     order))) {
 
-            List<Artist> artists = new ArrayList<>();
             while (result.next()) {
                 Artist artist = new Artist(result.getInt(INDEX_ARTISTS_ID), result.getString(INDEX_ARTISTS_NAME));
                 artists.add(artist);
             }
 
-            return artists;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
+        return artists;
     }
 
-    public String generateStringQuery(OrderByType order) {
-        StringBuilder stringQuery = new StringBuilder("SELECT * FROM ");
-        stringQuery.append(TABLE_ARTISTS);
+//select albums.name from albums join artists on albums.artist=artists._id where albums.name='Carole King' ORDER BY albums.name COLLATE NOCASE ASC
+    public List<String> queryAlbumsForArtist(String artistName, OrderByType order) {
+        List<String> albumsForArtist = new ArrayList<>();
+
+        StringBuilder joinString = new StringBuilder("select ");
+        joinString.append(TABLE_ALBUMS);
+        joinString.append(".");
+        joinString.append(COLUMN_ALBUM_NAME);
+        joinString.append(" from ");
+        joinString.append(TABLE_ALBUMS);
+        joinString.append(" join ");
+        joinString.append(TABLE_ARTISTS);
+        joinString.append(" on ");
+        joinString.append(TABLE_ALBUMS);
+        joinString.append(".");
+        joinString.append(COLUMN_ALBUM_ARTIST);
+        joinString.append("=");
+        joinString.append(TABLE_ARTISTS);
+        joinString.append(".");
+        joinString.append(COLUMN_ARTIST_ID);
+        joinString.append(" where ");
+        joinString.append(TABLE_ARTISTS);
+        joinString.append(".");
+        joinString.append(COLUMN_ARTIST_NAME);
+        joinString.append("=");
+        joinString.append("'");
+        joinString.append(artistName);
+        joinString.append("'");
+        joinString.append(sortOrder(TABLE_ALBUMS + "." + COLUMN_ALBUM_NAME, order));
+
+        try (Statement statement = conn.createStatement();
+             ResultSet result = statement.executeQuery(joinString.toString())) {
+
+            while (result.next()) {
+                albumsForArtist.add(result.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return albumsForArtist;
+    }
+
+    public String generatePlainSelectQuery(String tableName, String columnName, OrderByType order) {
+        StringBuilder plainSelect = new StringBuilder("SELECT * FROM ");
+        plainSelect.append(tableName);
+        plainSelect.append(sortOrder(columnName, order));
+
+        return plainSelect.toString();
+    }
+
+    public String sortOrder(String columnName, OrderByType order) {
+        StringBuilder orderBy = new StringBuilder();
 
         if (order != OrderByType.NONE) {
-            stringQuery.append(" ORDER BY ");
-            stringQuery.append(COLUMN_ARTIST_NAME);
-            stringQuery.append(" COLLATE NOCASE ");
+            orderBy.append(" ORDER BY ");
+            orderBy.append(columnName);
+            orderBy.append(" COLLATE NOCASE ");
 
             switch (order) {
                 case ASC:
-                    stringQuery.append("ASC");
+                    orderBy.append("ASC");
                     break;
                 case DESC:
-                    stringQuery.append("DESC");
+                    orderBy.append("DESC");
                     break;
                 default:
                     break;
             }
         }
-        return stringQuery.toString();
+        return orderBy.toString();
     }
 }
