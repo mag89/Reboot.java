@@ -45,7 +45,7 @@ public class Datasource implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         try {
             if (!this.conn.isClosed()) {
                 this.conn.close();
@@ -56,6 +56,25 @@ public class Datasource implements AutoCloseable {
     }
 
     public List<Artist> queryArtists(OrderByType order) {
+
+
+        try (Statement statement = conn.createStatement();
+             ResultSet result = statement.executeQuery(generateStringQuery(order))) {
+
+            List<Artist> artists = new ArrayList<>();
+            while (result.next()) {
+                Artist artist = new Artist(result.getInt(INDEX_ARTISTS_ID), result.getString(INDEX_ARTISTS_NAME));
+                artists.add(artist);
+            }
+
+            return artists;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String generateStringQuery(OrderByType order) {
         StringBuilder stringQuery = new StringBuilder("SELECT * FROM ");
         stringQuery.append(TABLE_ARTISTS);
 
@@ -75,20 +94,6 @@ public class Datasource implements AutoCloseable {
                     break;
             }
         }
-        System.out.println(stringQuery.toString());
-        try (Statement statement = conn.createStatement();
-             ResultSet result = statement.executeQuery(stringQuery.toString())) {
-
-            List<Artist> artists = new ArrayList<>();
-            while (result.next()) {
-                Artist artist = new Artist(result.getInt(INDEX_ARTISTS_ID), result.getString(INDEX_ARTISTS_NAME));
-                artists.add(artist);
-            }
-
-            return artists;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return stringQuery.toString();
     }
 }

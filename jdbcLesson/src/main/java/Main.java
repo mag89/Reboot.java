@@ -23,7 +23,7 @@ public class Main {
 
             for (Artist artist : artists) {
                 System.out.println(artist);
-                System.out.println();
+//                System.out.println();
             }
 
             if (!datasource.openConn()) {
