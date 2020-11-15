@@ -55,9 +55,29 @@ public class Datasource implements AutoCloseable {
         }
     }
 
-    public List<Artist> queryArtists() {
+    public List<Artist> queryArtists(OrderByType order) {
+        StringBuilder stringQuery = new StringBuilder("SELECT * FROM ");
+        stringQuery.append(TABLE_ARTISTS);
+
+        if (order != OrderByType.NONE) {
+            stringQuery.append(" ORDER BY ");
+            stringQuery.append(COLUMN_ARTIST_NAME);
+            stringQuery.append(" COLLATE NOCASE ");
+
+            switch (order) {
+                case ASC:
+                    stringQuery.append("ASC");
+                    break;
+                case DESC:
+                    stringQuery.append("DESC");
+                    break;
+                default:
+                    break;
+            }
+        }
+        System.out.println(stringQuery.toString());
         try (Statement statement = conn.createStatement();
-             ResultSet result = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS)) {
+             ResultSet result = statement.executeQuery(stringQuery.toString())) {
 
             List<Artist> artists = new ArrayList<>();
             while (result.next()) {

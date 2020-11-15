@@ -1,5 +1,6 @@
 import model.Artist;
 import model.Datasource;
+import model.OrderByType;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +12,7 @@ public class Main {
         try (Datasource datasource = new Datasource()) {
             datasource.openConn();
 
-            List<Artist> artists = Optional.ofNullable(datasource.queryArtists())
+            List<Artist> artists = Optional.ofNullable(datasource.queryArtists(OrderByType.ASC))
                     .orElseThrow(NoArtistsException::new);
 
 //            List<Artist> artists = datasource.queryArtists();
