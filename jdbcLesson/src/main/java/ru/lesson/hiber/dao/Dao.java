@@ -1,11 +1,15 @@
 package ru.lesson.hiber.dao;
 
-public interface Dao {
-    <T> void create(T t);
+import java.util.List;
 
-    <T> T read(String model);
+public interface Dao<T> {
+    void create(T t);
 
-    <T> void update(T t);
+    T read(String model);
 
-    <T> void delete(T t);
+    void update(T t);
+
+    void delete(T t);
+
+    List<T> selectStarFromTable();
 }
