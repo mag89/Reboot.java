@@ -7,9 +7,10 @@ import javax.persistence.*;
 public class CpuProvider {
     @Id
     @GeneratedValue
+    @Column(name = "ID")
     private int id;
-    @Column
-    private String provider;
+    @Column(name = "NAME")
+    private String name;
 
 
     public int getId() {
@@ -20,16 +21,16 @@ public class CpuProvider {
         this.id = id;
     }
 
-    public String getProvider() {
-        return provider;
+    public String getName() {
+        return name;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return String.format("CpuProvider{id=%n, provider=%s}", id, provider);
+        return String.format("CpuProvider{id=%n, provider=%s}", id, name);
     }
 }

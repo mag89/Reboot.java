@@ -7,20 +7,19 @@ import javax.persistence.*;
 public class Cpu {
     @Id
     @GeneratedValue
-    @Column
+    @Column(name = "ID")
     private int id;
-    @Column
+    @Column(name = "PROVIDER_ID")
     @ManyToOne(targetEntity = CpuProvider.class, cascade = CascadeType.ALL)
     private CpuProvider provider;
-    @Column(unique = true)
+    @Column(name = "MODEL", unique = true)
     private String model;
-    @Column
+    @Column(name = "CORES_QUANTITY")
     private int coresQuantity;
-    @Column
+    @Column(name = "CORE_FREQUENCY")
     private int coreFrequency;
-    @Column
+    @Column(name = "SOCKET")
     private String socket;
-
 
     public CpuProvider getProvider() {
         return provider;
