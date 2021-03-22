@@ -12,6 +12,8 @@ public class Cpu {
     @Column
     @ManyToOne(targetEntity = CpuProvider.class, cascade = CascadeType.ALL)
     private CpuProvider provider;
+    @Column(unique = true)
+    private String model;
     @Column
     private int coresQuantity;
     @Column
@@ -26,6 +28,14 @@ public class Cpu {
 
     public void setProvider(CpuProvider provider) {
         this.provider = provider;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public int getCoresQuantity() {
