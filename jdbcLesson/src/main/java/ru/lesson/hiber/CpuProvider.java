@@ -27,4 +27,9 @@ public class CpuProvider {
     public void setProvider(String provider) {
         this.provider = provider;
     }
+
+    @Override
+    public String toString() {
+        return String.format("CpuProvider{id=%n, provider=%s}", id, provider);
+    }
 }

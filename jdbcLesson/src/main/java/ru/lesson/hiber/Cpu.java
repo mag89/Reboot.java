@@ -61,4 +61,10 @@ public class Cpu {
     public void setSocket(String socket) {
         this.socket = socket;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Cpu{id=%n, provider=%s, model=%s, coresQuantity=%n, coreFrequency=%n, socket=%s",
+                id, provider, model, coresQuantity, coreFrequency, socket);
+    }
 }
