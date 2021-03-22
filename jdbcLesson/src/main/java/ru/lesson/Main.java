@@ -1,3 +1,5 @@
+package ru.lesson;
+
 import model.Artist;
 import model.Datasource;
 import model.OrderByType;

@@ -1,3 +1,5 @@
+package ru.lesson;
+
 import java.sql.*;
 
 public class IntroductionToJDBC {
