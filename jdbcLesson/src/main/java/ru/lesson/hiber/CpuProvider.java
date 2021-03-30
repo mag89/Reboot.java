@@ -6,10 +6,12 @@ import javax.persistence.*;
 @Table(name = "CPU_PROVIDER")
 public class CpuProvider {
     @Id
-    @GeneratedValue
-    @Column(name = "ID")
+    @SequenceGenerator(name = "provider_id", sequenceName = "provider_id_seq", allocationSize = 0)
+    @GeneratedValue(generator = "provider_id")
+    @Column(name = "ID", nullable = false, unique = true)
     private int id;
-    @Column(name = "NAME")
+
+    @Column(name = "NAME", unique = true)
     private String name;
 
 
