@@ -31,6 +31,36 @@ public class InitializerSqliteDb {
             Statement statement = conn.createStatement();
             statement.execute(drop_table + TABLE_CPU);
             statement.execute(drop_table + TABLE_PROVIDER);
+//            statement.execute("CREATE TABLE IF NOT EXIST " + TABLE_CPU + "(" +
+//                    COLUMN_CPU_ID + " INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
+//                    COLUMN_CPU_PROVIDER + " INTEGER, " +
+//                    COLUMN_CPU_MODEL + " TEXT, " +
+//                    COLUMN_CPU_CORE_QUANTITY + " INTEGER, " +
+//                    COLUMN_CPU_CORE_FREQUENCY + " INTEGER, " +
+//                    COLUMN_CPU_CORE_SOCKET + " TEXT" +
+//                    ")");
+            statement.execute(String.format("CREATE TABLE IF NOT EXIST %s" +
+                            "(%s INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
+                            "%s INTEGER, %s TEXT, %s INTEGER, %s INTEGER, %s TEXT)",
+                    TABLE_CPU,
+                    COLUMN_CPU_ID,
+                    COLUMN_CPU_PROVIDER,
+                    COLUMN_CPU_MODEL,
+                    COLUMN_CPU_CORE_QUANTITY,
+                    COLUMN_CPU_CORE_FREQUENCY,
+                    COLUMN_CPU_CORE_SOCKET));
+
+            statement.execute(String.format("CREATE TABLE IF NOT EXIST %s" +
+                            "(%s FOREIGN KEY ("+ TABLE_CPU +") REFERENCES "+ Col+"(id) NOT NULL AUTOINCREMENT, " +
+                            "%s TEXT)",
+                    COLUMN_PROVIDER_ID,
+                    COLUMN_PROVIDER_NAME));
+
+            statement.execute("CREATE TABLE IF NOT EXIST " + TABLE_PROVIDER + "(" +
+                    COLUMN_PROVIDER_ID + " INTEGER FOREIGN KEY (auth_id) REFERENCES auth(id) NOT NULL AUTOINCREMENT , " +
+                    COLUMN_PROVIDER_NAME + "TEXT" +
+                    ")"
+            );
 
         } catch (SQLException e) {
             e.printStackTrace();
