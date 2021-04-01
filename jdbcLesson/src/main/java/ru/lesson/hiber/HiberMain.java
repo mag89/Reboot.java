@@ -7,7 +7,9 @@ public class HiberMain {
     public static void main(String[] args) {
         SessionFactory factory = null;
         try {
-            factory = new Configuration().configure().buildSessionFactory();
+//            factory = new Configuration().configure().buildSessionFactory();
+            InitializerSqliteDb initializerSqliteDb = new InitializerSqliteDb();
+            initializerSqliteDb.initializeDb();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -14,7 +14,7 @@ public class Cpu {
     @Column(name = "PROVIDER_ID")
     @ManyToOne(targetEntity = CpuProvider.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    private CpuProvider provider;
+    private int provider_id;
 
     @Column(name = "MODEL", unique = true)
     private String model;
@@ -29,12 +29,12 @@ public class Cpu {
     private String socket;
 
 
-    public CpuProvider getProvider() {
-        return provider;
+    public int getProvider_id() {
+        return provider_id;
     }
 
-    public void setProvider(CpuProvider provider) {
-        this.provider = provider;
+    public void setProvider_id(int provider_id) {
+        this.provider_id = provider_id;
     }
 
     public String getModel() {
@@ -72,6 +72,6 @@ public class Cpu {
     @Override
     public String toString() {
         return String.format("Cpu{id=%n, provider=%s, model=%s, coresQuantity=%n, coreFrequency=%n, socket=%s",
-                id, provider, model, coresQuantity, coreFrequency, socket);
+                id, provider_id, model, coresQuantity, coreFrequency, socket);
     }
 }

@@ -42,7 +42,7 @@ public class InitializerSqliteDb {
             statement.execute(String.format("CREATE TABLE IF NOT EXIST %s" +
                             "(%s INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
                             "%s INTEGER, %s TEXT, %s INTEGER, %s INTEGER, %s TEXT, " +
-                            "FOREIGN KEY (%s) REFERENCES %s(%s))",
+                            "FOREIGN KEY (%s) REFERENCES %s(%s))", // you must enable sqlite> PRAGMA foreign_keys = ON;
                     TABLE_CPU,
                     COLUMN_CPU_ID,
                     COLUMN_CPU_PROVIDER_ID,

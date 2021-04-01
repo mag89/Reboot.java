@@ -29,7 +29,7 @@ public class CpuDao implements Dao<Cpu> {
             session.beginTransaction();
             Cpu result = session.get(Cpu.class, model);
             if (result != null) {
-                Hibernate.initialize(result.getProvider());
+                Hibernate.initialize(result.getProvider_id());
             }
             return result;
         }
