@@ -39,8 +39,14 @@ public class InitializerSqliteDb {
 //                    COLUMN_CPU_CORE_FREQUENCY + " INTEGER, " +
 //                    COLUMN_CPU_CORE_SOCKET + " TEXT" +
 //                    ")");
-            statement.execute(String.format("CREATE TABLE IF NOT EXIST %s" +
-                            "(%s INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
+            statement.execute("CREATE TABLE IF NOT EXISTS " + TABLE_PROVIDER + "(" +
+                    COLUMN_PROVIDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
+                    COLUMN_PROVIDER_NAME + " TEXT" +
+                    ")"
+            );
+
+            statement.execute(String.format("CREATE TABLE IF NOT EXISTS %s" +
+                            "(%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                             "%s INTEGER, %s TEXT, %s INTEGER, %s INTEGER, %s TEXT, " +
                             "FOREIGN KEY (%s) REFERENCES %s(%s))", // you must enable sqlite> PRAGMA foreign_keys = ON;
                     TABLE_CPU,
@@ -60,11 +66,7 @@ public class InitializerSqliteDb {
 //                    COLUMN_PROVIDER_ID,
 //                    COLUMN_PROVIDER_NAME));
 
-            statement.execute("CREATE TABLE IF NOT EXIST " + TABLE_PROVIDER + "(" +
-                    COLUMN_PROVIDER_ID + " INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT , " +
-                    COLUMN_PROVIDER_NAME + "TEXT" +
-                    ")"
-            );
+
 
         } catch (SQLException e) {
             e.printStackTrace();
