@@ -31,6 +31,8 @@ public class InitializerSqliteDb {
             Statement statement = conn.createStatement();
             statement.execute(drop_table + TABLE_CPU);
             statement.execute(drop_table + TABLE_PROVIDER);
+
+            statement.execute("PRAGMA foreign_keys=on");
 //            statement.execute("CREATE TABLE IF NOT EXIST " + TABLE_CPU + "(" +
 //                    COLUMN_CPU_ID + " INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, " +
 //                    COLUMN_CPU_PROVIDER + " INTEGER, " +
@@ -65,8 +67,6 @@ public class InitializerSqliteDb {
 //                            "%s TEXT)",
 //                    COLUMN_PROVIDER_ID,
 //                    COLUMN_PROVIDER_NAME));
-
-
 
         } catch (SQLException e) {
             e.printStackTrace();
