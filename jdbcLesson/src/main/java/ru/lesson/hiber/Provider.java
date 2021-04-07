@@ -15,7 +15,7 @@ public class Provider {
     @Column(name = "NAME", unique = true)
     private String name;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "PROVIDER_ID")
     private List<Cpu> cpuModels;
 
