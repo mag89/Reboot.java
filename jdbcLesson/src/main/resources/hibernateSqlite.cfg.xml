@@ -1,0 +1,19 @@
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.connection.url">jdbc:sqlite:sqlite.db</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLiteDialect</property>
+        <property name="show_sql">true</property>
+        <property name="connection.pool_size">5</property>
+        <property name="hibernate.id.new_generator_mappings">false</property>
+        <property name="hibernate.hbm2ddl.auto">create</property><!-- creates schema from entities each app deploy  -->
+<!--        <property name="hibernate.da"-->
+
+        <!-- here all entities will come -->
+        <mapping class="ru.lesson.hiber.Cpu"/>
+        <mapping class="ru.lesson.hiber.Provider"/>
+
+    </session-factory>
+</hibernate-configuration> 

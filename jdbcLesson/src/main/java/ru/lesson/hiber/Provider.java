@@ -1,18 +1,23 @@
 package ru.lesson.hiber;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "CPU_PROVIDER")
-public class CpuProvider {
+@Table(name = "PROVIDER")
+public class Provider {
     @Id
-    @SequenceGenerator(name = "provider_id", sequenceName = "provider_id_seq", allocationSize = 0)
-    @GeneratedValue(generator = "provider_id")
+    @SequenceGenerator(name = "provider_id", sequenceName = "provider_id_seq", allocationSize = 0) //not allowed for sqlite
+    @GeneratedValue(generator = "provider_id", strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false, unique = true)
     private int id;
 
     @Column(name = "NAME", unique = true)
     private String name;
+
+    @OneToMany
+    @JoinColumn(name = "PROVIDER_ID")
+    private List<Cpu> cpuModels;
 
 
     public int getId() {

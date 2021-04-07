@@ -1,19 +1,21 @@
 package ru.lesson.hiber;
 
+import org.hibernate.annotations.GeneratorType;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "CPU")
 public class Cpu {
     @Id
-    @SequenceGenerator(name = "cpu_id", sequenceName = "cpu_id_seq", allocationSize = 0)
-    @GeneratedValue(generator = "cpu_id")
+    @SequenceGenerator(name = "cpu_id", sequenceName = "cpu_id_seq", allocationSize = 0) //not allowed for sqlite
+    @GeneratedValue(generator = "cpu_id", strategy = GenerationType.SEQUENCE)
     @Column(name = "ID", nullable = false, unique = true)
     private int id;
 
     @Column(name = "PROVIDER_ID")
-    @ManyToOne(targetEntity = CpuProvider.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
+//    @ManyToOne(targetEntity = CpuProvider.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+//            CascadeType.DETACH, CascadeType.REFRESH})
     private int provider_id;
 
     @Column(name = "MODEL", unique = true)
