@@ -9,7 +9,7 @@ public class HiberMain {
     public static void main(String[] args) {
         SessionFactory factory = null;
         SessionFactory factory2 = null;
-//       final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernateSqlite.cfg").build();
+        //       final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure("hibernateSqlite.cfg").build();
 
         try {
 //            InitializerSqliteDb initializerSqliteDb = new InitializerSqliteDb();
