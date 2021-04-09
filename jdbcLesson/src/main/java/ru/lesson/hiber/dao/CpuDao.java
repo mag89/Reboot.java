@@ -1,6 +1,7 @@
 package ru.lesson.hiber.dao;
 
 import org.hibernate.Hibernate;
+import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ru.lesson.hiber.Cpu;
@@ -18,7 +19,10 @@ public class CpuDao implements Dao<Cpu> {
     public void create(Cpu cpu) {
         try (Session session = factory.openSession()) {
             session.beginTransaction();
-            session.saveOrUpdate(cpu);
+            if (cpu.getId() == 0) {
+                session.persist(cpu);
+            }
+            session.replicate(cpu, ReplicationMode.OVERWRITE);
             session.getTransaction().commit();
         }
     }

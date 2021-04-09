@@ -73,8 +73,8 @@ class CpuDaoTest {
 
         providerDao.create(detachedProvider);
 
-        Provider expected = detachedProvider;
-        Provider actual = providerDao.read(55);
+        int expected = detachedProvider.getId();
+        int actual = providerDao.read(55).getId();
 
         Assert.assertEquals(expected, actual);
     }

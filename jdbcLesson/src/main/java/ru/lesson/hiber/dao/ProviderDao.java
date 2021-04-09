@@ -1,5 +1,6 @@
 package ru.lesson.hiber.dao;
 
+import org.hibernate.ReplicationMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ru.lesson.hiber.Provider;
@@ -18,7 +19,10 @@ public class ProviderDao implements Dao<Provider> {
     public void create(Provider provider) {
         try (Session session = factory.openSession()) {
             session.beginTransaction();
-            session.saveOrUpdate(provider);
+            if (provider.getId() == 0) {
+                session.persist(provider);
+            }
+            session.replicate(provider, ReplicationMode.OVERWRITE);
             session.getTransaction().commit();
         }
     }
