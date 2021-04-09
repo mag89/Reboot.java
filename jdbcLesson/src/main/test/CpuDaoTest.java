@@ -66,6 +66,20 @@ class CpuDaoTest {
     }
 
     @Test
+    void persistDetachedEntity() {
+        Provider detachedProvider = new Provider();
+        detachedProvider.setId(55);
+        detachedProvider.setName("I`m detaced provider");
+
+        providerDao.create(detachedProvider);
+
+        Provider expected = detachedProvider;
+        Provider actual = providerDao.read(55);
+
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
     void read() {
     }
 
