@@ -24,13 +24,19 @@ public class CpuDao implements Dao<Cpu> {
     }
 
     @Override
-    public Cpu read(String model) {
+    public Cpu read(Cpu entity) {
         try (Session session = factory.openSession()) {
             session.beginTransaction();
-            Cpu result = session.get(Cpu.class, model);
-            if (result != null) {
-                Hibernate.initialize(result.getProvider_id());
-            }
+            Cpu result = session.get(Cpu.class, entity.getId());
+            return result;
+        }
+    }
+
+    @Override
+    public Cpu read(int id) {
+        try (Session session = factory.openSession()) {
+            session.beginTransaction();
+            Cpu result = session.get(Cpu.class, id);
             return result;
         }
     }

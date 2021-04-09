@@ -3,6 +3,7 @@ package ru.lesson.hiber;
 import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "CPU")
@@ -30,6 +31,9 @@ public class Cpu {
     @Column(name = "SOCKET")
     private String socket;
 
+    public int getId() {
+        return id;
+    }
 
     public int getProvider_id() {
         return provider_id;
@@ -75,5 +79,23 @@ public class Cpu {
     public String toString() {
         return String.format("Cpu{id=%n, provider=%s, model=%s, coresQuantity=%n, coreFrequency=%n, socket=%s",
                 id, provider_id, model, coresQuantity, coreFrequency, socket);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cpu)) return false;
+        Cpu cpu = (Cpu) o;
+        return id == cpu.id &&
+                provider_id == cpu.provider_id &&
+                coresQuantity == cpu.coresQuantity &&
+                coreFrequency == cpu.coreFrequency &&
+                model.equals(cpu.model) &&
+                socket.equals(cpu.socket);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, provider_id, model, coresQuantity, coreFrequency, socket);
     }
 }

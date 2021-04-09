@@ -24,10 +24,15 @@ public class ProviderDao implements Dao<Provider> {
     }
 
     @Override
-    public Provider read(String model) {
+    public Provider read(Provider entity) {
+        return null;
+    }
+
+    @Override
+    public Provider read(int id) {
         try (Session session = factory.openSession()) {
             session.beginTransaction();
-            Provider result = session.get(Provider.class, model);
+            Provider result = session.get(Provider.class, id);
             return result;
         }
     }
