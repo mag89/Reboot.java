@@ -23,7 +23,7 @@ public class StreamExamples {
          *
          */
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("Element 1");
         list.add("Element 2");
         list.add("Element 3");
