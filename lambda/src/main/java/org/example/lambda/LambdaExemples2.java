@@ -25,7 +25,7 @@ public class LambdaExemples2 {
         /**
          * Java lambda expression can implement interfaces with
          * a single unimplemented method (abstract) method,
-         * but as many default or static methods as yuo like.
+         * but they may default or static methods as yuo like.
          * **/
 
 
@@ -50,7 +50,7 @@ public class LambdaExemples2 {
          * and if it reference is local variable, the local variable must be final/effective final,
          * and cant be changed after lambda implementation
          *
-         * Is same as true for static and regular fields, but it allowed change value after lambda implementation
+         * It`s same as true for static and regular fields, but it allowed change value after lambda implementation
          */
 
         final String otherText = "Hello: "; //the local variable does not changed value after has been set in first time,
