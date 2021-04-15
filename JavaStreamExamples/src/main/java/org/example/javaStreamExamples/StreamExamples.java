@@ -41,10 +41,12 @@ public class StreamExamples {
         /**
          * Non-terminal vs Terminal Operations.
          *     * Non-terminal operations add element processing operations to the Stream,
-         *     but does not start the iteration of the elements. (just configuring the elements for later)
+         *     but does not start the iteration of the elements. (just configuring the 
+         *     elements for later)
          *
          *     * Terminal operations start the internal processing of the elements, and
-         *     processes each element via the non-terminal and terminal operations set on the Stream.
+         *     processes each element via the non-terminal and terminal operations set 
+         *     on the Stream.
          */
 
 
