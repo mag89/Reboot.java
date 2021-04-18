@@ -21,9 +21,9 @@ public class CachedFactorizer implements Servlet {
         BigInteger[] factors = null;
 
         synchronized (this) {
-            ++hits; //read -> change -> write operation
+            ++hits; //read -> change -> write operation must be atomic
 
-            if (i.equals(lastNumber)) { //check-> then act operation
+            if (i.equals(lastNumber)) { //check-> then act operation must be atomic
                 ++cacheHits; //moreover read -> change -> write operation
                 factors = lastFactors.clone(); //moreover access to mutable state
             }
