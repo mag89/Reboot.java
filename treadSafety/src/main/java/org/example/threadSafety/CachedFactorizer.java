@@ -31,7 +31,7 @@ public class CachedFactorizer implements Servlet {
         }
 
         if (factors == null) { //a local variable check
-            factors = factor(i);
+            factors = factor(i); //supposed this is hard-calculating operation
 
             synchronized (this) {
                 lastNumber = i;
