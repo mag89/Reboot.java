@@ -10,7 +10,8 @@ public class CachedFactorizer implements Servlet {
     @Mutable @GuardedBy(guardBy = "this") private long cacheHits;
 
 
-    public synchronized long getHits() { return hits; } //must synchronized any access to mutable state
+    public synchronized long getHits() { return hits; } //must synchronized any access
+                                                        // to shared mutable state
 
     public synchronized double getCacheHitRatio() {
         return (double) cacheHits / (double) getHits(); //invariant
