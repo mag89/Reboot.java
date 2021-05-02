@@ -93,5 +93,15 @@ class CpuDaoTest {
 
     @Test
     void selectStarFromTable() {
+        Runnable myRunnable =  new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("tra ta ta");
+            }
+        };
+
+        Thread myThread = new Thread(myRunnable);
+        myThread.jo
+
     }
 }

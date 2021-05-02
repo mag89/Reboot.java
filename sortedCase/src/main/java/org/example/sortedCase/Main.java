@@ -1,25 +1,36 @@
 package org.example.sortedCase;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
 
     public static void main(String[] args) {
-//        int randInt = new Random().nextInt();
+        Map<String, Long> nanos = new HashMap<>();
+        Long start = 0L;
+        Long finish = 0L;
         List<Integer> listInt = new ArrayList<>();
+        int bound = 100_000;
 
-        for (int i = 0; i <= 500_000; i++) {
-            listInt.add(new Random().nextInt(7_431));
+        for (int i = 0; i <= bound; i++) {
+            listInt.add(new Random().nextInt(bound));
         }
 
-//        System.out.println(dummySort(listInt));
+        start = System.currentTimeMillis();
+        dummySort(listInt);
+        finish = System.currentTimeMillis();
+        nanos.put("dummy sort", finish - start);
+
+
+        start = System.currentTimeMillis();
+        quickSort(listInt);
+        finish = System.currentTimeMillis();
+        nanos.put("quick sort", (finish - start));
+
+        System.out.println(nanos);
 
 //        System.out.println(listInt.stream().sorted().collect(Collectors.toList()));
-        Collections.sort(listInt);
-        System.out.println(listInt);
+//        Collections.sort(listInt);
 
-//        Arrays.sort();
 
     }
 
@@ -31,8 +42,9 @@ public class Main {
             int maxInt = 0;
             int maxIntIndex = 0;
             for (int i = 0; i < integers.size(); i++) {
-                if (integers.get(i) > maxInt) {
-                    maxInt = integers.get(i);
+                int thisInt = integers.get(i);
+                if (thisInt > maxInt) {
+                    maxInt = thisInt;
                     maxIntIndex = i;
                 }
             }
@@ -43,38 +55,35 @@ public class Main {
         return sortedList;
     }
 
-    public static void quickSort(List<Integer> list, int begin, int end) {
-        Object[] arr = list.toArray();
 
-        if (begin < end) {
-            int partitionIndex = partition(arr, begin, end);
+    public static List<Integer> quickSort(List<Integer> numbers) {
+        int sizeOfList = numbers.size();
 
-            quickSort(list, begin, partitionIndex-1);
-            quickSort(list, partitionIndex+1, end);
-        }
-
-
-    }
-
-    private static int partition(Object[] arr, int begin, int end) {
-        int pivot = (Integer) arr[end];
-        int i = (begin-1);
-
-        for (int j = begin; j < end; j++) {
-            if ((Integer) arr[j] <= pivot) {
-                i++;
-
-                int swapTemp = (Integer) arr[i];
-                arr[i] = arr[j];
-                arr[j] = swapTemp;
+        if (sizeOfList < 2) {
+            return numbers;
+        } else {
+            int pivotIndex = new Random().nextInt(sizeOfList);
+            int pivot = numbers.get(pivotIndex);
+            numbers.remove(pivotIndex);
+            List<Integer> lessThanPivot = new ArrayList<>();
+            List<Integer> greaterThanPivot = new ArrayList<>();
+            for (Integer num : numbers) {
+                if (num >= pivot) {
+                    greaterThanPivot.add(num);
+                } else {
+                    lessThanPivot.add(num);
+                }
             }
+            List<Integer> firstSortedHalflist = quickSort(lessThanPivot);
+            firstSortedHalflist.add(pivot);
+            List<Integer> secondSortedHalflist = quickSort(greaterThanPivot);
+
+            firstSortedHalflist.addAll(secondSortedHalflist);
+
+
+            return firstSortedHalflist;
         }
 
-        int swapTemp = (Integer) arr[i+1];
-        arr[i+1] = arr[end];
-        arr[end] = swapTemp;
-
-        return i+1;
     }
 
 

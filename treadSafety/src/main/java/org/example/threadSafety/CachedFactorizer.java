@@ -14,8 +14,8 @@ public class CachedFactorizer implements Servlet {
                                                         // to shared mutable state
 
     public synchronized double getCacheHitRatio() {
-        return (double) cacheHits / (double) getHits(); //invariant
-    }
+        return (double) cacheHits / (double) getHits();} //invariant
+
 
     public void service(ServletRequest req, ServletResponse resp) {
         BigInteger i = req.extract();
