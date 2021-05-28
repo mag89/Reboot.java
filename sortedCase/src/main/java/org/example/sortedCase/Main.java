@@ -104,7 +104,6 @@ public class Main {
 
             firstSortedHalflist.addAll(secondSortedHalflist);
 
-
             return firstSortedHalflist;
         }
 
