@@ -10,18 +10,21 @@ public class StartOz {
      */
 
     public String startOz(String str) {
+        String result = "";
+
         if (str.equals("")) {
-            return "";
+            return  "";
         }
 
         if (str.startsWith("oz")) {
-            return "oz";
+            result = "oz";
         } else if (str.startsWith("o")) {
-            return "o";
-        } else if (str.charAt(1) == 'z') {
-            return "z";
+            result = "o";
+        } else if (str.length() >= 2 && str.charAt(1) == 'z') {
+            result = "z";
         }
-        return "";
+
+        return result;
 
     }
 }
