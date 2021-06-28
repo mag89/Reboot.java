@@ -6,8 +6,6 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-
 public class Topping1Test {
     private Topping1 instance = new Topping1();
 
