@@ -3,6 +3,8 @@ package server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -23,7 +25,6 @@ public class Server {
 
                 System.out.println("Client connected");
 
-
                 new Thread(() -> {
                     try {
                         String request = Optional.ofNullable(bufferedReader.readLine())
@@ -37,27 +38,34 @@ public class Server {
                         try {
                             Thread.sleep(4000);
                         } catch (InterruptedException e) {
+                            closeResources(Arrays.asList(bufferedReader, bufferedWriter, socket));
                         }
-
 
                         System.out.println("response = " + response);
                         bufferedWriter.write(response);
                         bufferedWriter.newLine();
                         bufferedWriter.flush();
 
+                        closeResources(Arrays.asList(bufferedReader, bufferedWriter, socket));
 
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 }).start();
-
-
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e); //прокидываем unchecked исключение наверх
         }
+    }
 
 
+    private static void closeResources(List<Closeable> l) {
+        l.stream().forEach(x -> {
+            try {
+                x.close();
+            } catch (IOException e) {
+                throw new RuntimeException();
+            }
+        });
     }
 }
