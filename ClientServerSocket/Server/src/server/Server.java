@@ -3,6 +3,8 @@ package server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Optional;
+import java.util.Random;
 
 public class Server {
     public static void main(String[] args) {
@@ -20,14 +22,16 @@ public class Server {
                     System.out.println("Client connected");
 
 
-                    String request = bufferedReader.readLine();
+                    String request = Optional.ofNullable(bufferedReader.readLine()).orElse("empty request from client");
                     System.out.println("request = " + request);
-                    String response = "HELLO FROM SERVER " + request.length();
+
+                    String response = String.valueOf(new Random().nextInt(request.length()) * 30 - 10);
                     System.out.println("response = " + response);
 
                     bufferedWriter.write(response);
                     bufferedWriter.newLine();
                     bufferedWriter.flush();
+
                 }
             }
 
