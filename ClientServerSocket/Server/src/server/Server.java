@@ -7,32 +7,51 @@ import java.util.Optional;
 import java.util.Random;
 
 public class Server {
+    private static final Object lock = new Object();
+
     public static void main(String[] args) {
 
         try (ServerSocket serverSocket = new ServerSocket(8000)) {
             System.out.println("Server started");
 
             while (true) {
-                try (Socket socket = serverSocket.accept();
-                     OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
-                     BufferedWriter bufferedWriter = new BufferedWriter(writer);
-                     InputStreamReader reader = new InputStreamReader(socket.getInputStream());
-                     BufferedReader bufferedReader = new BufferedReader(reader)) {
+                Socket socket = serverSocket.accept();
+                OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
+                BufferedWriter bufferedWriter = new BufferedWriter(writer);
+                InputStreamReader reader = new InputStreamReader(socket.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(reader);
 
-                    System.out.println("Client connected");
+                System.out.println("Client connected");
 
 
-                    String request = Optional.ofNullable(bufferedReader.readLine()).orElse("empty request from client");
-                    System.out.println("request = " + request);
+                new Thread(() -> {
+                    try {
+                        String request = Optional.ofNullable(bufferedReader.readLine())
+                                .orElse("empty request from client");
 
-                    String response = String.valueOf(new Random().nextInt(request.length()) * 30 - 10);
-                    System.out.println("response = " + response);
+                        System.out.println("request = " + request);
 
-                    bufferedWriter.write(response);
-                    bufferedWriter.newLine();
-                    bufferedWriter.flush();
+                        String response = String.valueOf(new Random()
+                                .nextInt(request.length()) * 30 - 10);
 
-                }
+                        try {
+                            Thread.sleep(4000);
+                        } catch (InterruptedException e) {
+                        }
+
+
+                        System.out.println("response = " + response);
+                        bufferedWriter.write(response);
+                        bufferedWriter.newLine();
+                        bufferedWriter.flush();
+
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).start();
+
+
             }
 
         } catch (IOException e) {
