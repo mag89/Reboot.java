@@ -36,7 +36,7 @@ public class Server {
                                 .nextInt(request.length()) * 30 - 10);
 
                         try {
-                            Thread.sleep(4000);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             closeResources(Arrays.asList(bufferedReader, bufferedWriter, socket));
                         }
