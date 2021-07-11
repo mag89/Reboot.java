@@ -1,4 +1,4 @@
-package codingBat.functional_2.noNeg.no9;
+package codingBat.functional_2.no9;
 
 import org.junit.jupiter.api.Test;
 

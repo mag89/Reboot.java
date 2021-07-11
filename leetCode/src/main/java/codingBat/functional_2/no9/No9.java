@@ -1,4 +1,4 @@
-package codingBat.functional_2.noNeg.no9;
+package codingBat.functional_2.no9;
 
 /*
 Given a list of non-negative integers, return a list of those numbers except omitting any that end with 9. (Note: % by 10)
