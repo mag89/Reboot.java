@@ -13,7 +13,7 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <springBootV>2.3.4.RELEASE</springBootV>
+        <springBootV>2.5.12</springBootV>
     </properties>
 
     <parent>
